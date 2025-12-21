@@ -1,0 +1,90 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    # =========== 修改开始：直接在 datasource 下面配置 ===========
+    driver-class-name: ${sky.datasource.driver-class-name}
+    url: ${sky.datasource.url}
+    username: ${sky.datasource.username}
+    password: ${sky.datasource.password}
+    # =========== 修改结束 ===========
+
+
+    # Druid 特有的配置（如连接池大小等）才放在这里，如果没有特有配置，留空也可以
+    druid:
+      # 这里可以放 filters, max-active 等配置
+      pass: true
+  data:
+    redis:
+      password: ${sky.redis.password}
+      database: ${sky.redis.database}
+      port: ${sky.redis.port}
+      host: ${sky.redis.host}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      sky:
+        mapper: debug
+        service: info
+        controller: info
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: itcast
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+    # 设置jwt签名加密时使用的密钥
+    user-secret-key: itheima
+    # 设置jwt过期时间
+    user-ttl: 7200000
+    #设置前端传递过来的令牌名称
+    user-token-name: authentication
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    bucket-name: ${sky.alioss.bucket-name}
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: ${sky.langchain4j.base-url}
+      api-key: ${sky.langchain4j.api-key}
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+    streaming-chat-model:
+      base-url: ${sky.langchain4j.base-url}
+      api-key: ${sky.langchain4j.api-key}
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+    embedding-model:
+      base-url: ${sky.langchain4j.base-url}
+      api-key: ${sky.langchain4j.api-key}
+      model-name: text-embedding-v3
+      log-requests: true
+      log-responses: true
+      max-segments-per-batch: 10
+  auto-scan:
+    packages-to-exclude:
+      - com.sky.mapper
